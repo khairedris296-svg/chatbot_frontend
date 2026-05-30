@@ -1,246 +1,190 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المساعد الذكي للمتجر</title>
-    <!-- استدعاء Tailwind CSS للتصميم الاحترافي -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- استدعاء أيقونات FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#0f172a',
-                        cardBg: '#1e293b',
-                        accent: '#38bdf8',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* تأثيرات الزجاج والأنيميشن الاحترافية */
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
-        body { font-family: 'Tajawal', sans-serif; background-color: #f1f5f9; }
-        
-        #chat-widget {
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            transform-origin: bottom right;
-        }
-        
-        .chat-hidden {
-            opacity: 0;
-            transform: scale(0.8) translateY(20px);
-            pointer-events: none;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المساعد الذكي للمتجر</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: { colors: { darkBg: '#0f172a', cardBg: '#1e293b', accent: '#38bdf8', } }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+    body { font-family: 'Tajawal', sans-serif; background-color: #f1f5f9; }
+     
+    #chat-widget { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform-origin: bottom right; }
+    .chat-hidden { opacity: 0; transform: scale(0.8) translateY(20px); pointer-events: none; }
+    .chat-visible { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+    .glass-header { background: rgba(30, 41, 59, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+    .msg-bubble { animation: slideUp 0.3s ease-out forwards; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .chat-visible {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-            pointer-events: auto;
-        }
-
-        .glass-header {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* تنسيق فقاعات الرسائل */
-        .msg-bubble { animation: slideUp 0.3s ease-out forwards; }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* تصميم سكرول بار أنيق */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
-
-        /* تنسيق الصور والروابط داخل رد البوت */
-        .bot-message img { border-radius: 8px; margin-top: 8px; max-width: 100%; height: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .bot-message a { display: inline-block; margin-top: 10px; background-color: #38bdf8; color: #0f172a; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-weight: bold; transition: background 0.2s; }
-        .bot-message a:hover { background-color: #7dd3fc; }
-    </style>
+    /* ستايل البطاقات التمريرية (Carousel) مع إظهار شريط التمرير */
+    .carousel-container {
+      display: flex; overflow-x: auto; gap: 12px; padding: 10px 5px 15px 5px; margin-top: 10px; margin-bottom: 5px;
+      scroll-snap-type: x mandatory; 
+      /* إظهار الشريط في فايرفوكس */
+      scrollbar-width: thin;
+      scrollbar-color: #38bdf8 rgba(0,0,0,0.2);
+    }
+    /* تصميم شريط التمرير الأفقي لمتصفحات كروم/سفاري */
+    .carousel-container::-webkit-scrollbar { height: 8px; }
+    .carousel-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+    .carousel-container::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
+    .carousel-container::-webkit-scrollbar-thumb:hover { background: #7dd3fc; }
+     
+    .carousel-card {
+      min-width: 220px; max-width: 220px; background: #1e293b; border: 1px solid #334155;
+      border-radius: 16px; padding: 12px; scroll-snap-align: start; flex-shrink: 0;
+      display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .carousel-img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; background-color: #0f172a; }
+    .carousel-title { font-weight: bold; color: #f8fafc; font-size: 14px; line-height: 1.4; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .carousel-price { color: #38bdf8; font-weight: bold; font-size: 16px; margin-bottom: 8px; }
+    .carousel-desc { color: #94a3b8; font-size: 12px; line-height: 1.4; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 12px; }
+    .carousel-btn { background: #38bdf8; color: #0f172a; text-align: center; padding: 8px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 13px; transition: all 0.2s; }
+    .carousel-btn:hover { background: #7dd3fc; transform: translateY(-2px); }
+  </style>
 </head>
 <body class="h-screen w-full flex items-center justify-center">
 
-    <!-- زر فتح الشات (Floating Action Button) -->
-    <button id="fab-button" onclick="toggleChat()" class="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-blue-500 to-accent rounded-full text-white shadow-lg shadow-blue-500/50 flex items-center justify-center hover:scale-110 transition-transform duration-300 z-50">
-        <i class="fas fa-robot text-2xl"></i>
-    </button>
+  <button id="fab-button" onclick="toggleChat()" class="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-blue-500 to-accent rounded-full text-white shadow-lg shadow-blue-500/50 flex items-center justify-center hover:scale-110 transition-transform duration-300 z-50">
+    <i class="fas fa-robot text-2xl"></i>
+  </button>
 
-    <!-- نافذة الشات بوت الاحترافية -->
-    <div id="chat-widget" class="fixed bottom-24 right-6 w-[380px] h-[600px] bg-darkBg rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-slate-700 chat-hidden z-50">
-        
-        <!-- Header -->
-        <div class="glass-header px-5 py-4 flex justify-between items-center shrink-0">
-            <div>
-                <h3 class="text-white font-bold text-lg flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                    مساعد المتجر الذكي
-                </h3>
-                <p class="text-slate-400 text-xs mt-1">مدعوم بالذكاء الاصطناعي للبحث والمقارنة</p>
-            </div>
-            <div class="flex gap-3 text-slate-400">
-                <button onclick="clearChat()" class="hover:text-white transition-colors text-sm bg-slate-800 px-3 py-1 rounded-full">مسح</button>
-                <button onclick="toggleChat()" class="hover:text-white transition-colors"><i class="fas fa-times text-xl"></i></button>
-            </div>
-        </div>
-
-        <!-- Messages Area -->
-        <div id="chat-messages" class="flex-1 p-5 overflow-y-auto flex flex-col gap-4">
-            <!-- رسالة الترحيب -->
-            <div class="flex gap-3 msg-bubble">
-                <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0 mt-1">
-                    <i class="fas fa-robot text-darkBg text-sm"></i>
-                </div>
-                <div class="bg-cardBg text-slate-200 p-3 rounded-2xl rounded-tr-none text-sm leading-relaxed border border-slate-700 shadow-sm bot-message">
-                    أهلاً بك! أنا جاهز لمساعدتك في العثور على أفضل العروض والمنتجات. عم تبحث اليوم؟
-                </div>
-            </div>
-        </div>
-
-        <!-- Input Area -->
-        <div class="p-4 bg-darkBg border-t border-slate-800 shrink-0">
-            <div class="relative flex items-center bg-slate-800 rounded-full border border-slate-700 focus-within:border-accent transition-colors overflow-hidden">
-                <input type="text" id="user-input" onkeypress="handleEnter(event)" placeholder="اسأل عن أي منتج..." class="w-full bg-transparent text-white text-sm px-5 py-3 outline-none placeholder-slate-500">
-                <button onclick="sendMessage()" class="absolute left-2 w-8 h-8 flex items-center justify-center bg-accent text-darkBg rounded-full hover:bg-white transition-colors">
-                    <i class="fas fa-paper-plane text-xs"></i>
-                </button>
-            </div>
-        </div>
+  <div id="chat-widget" class="fixed bottom-24 right-6 w-[380px] max-w-[90vw] h-[600px] max-h-[80vh] bg-darkBg rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-slate-700 chat-hidden z-50">
+    <div class="glass-header px-5 py-4 flex justify-between items-center shrink-0">
+      <div>
+        <h3 class="text-white font-bold text-lg flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>مساعد المتجر الذكي</h3>
+      </div>
+      <div class="flex gap-3 text-slate-400">
+        <button onclick="clearChat()" class="hover:text-white transition-colors text-sm bg-slate-800 px-3 py-1 rounded-full">مسح</button>
+        <button onclick="toggleChat()" class="hover:text-white transition-colors"><i class="fas fa-times text-xl"></i></button>
+      </div>
     </div>
 
-    <script>
-        /* ------ الإعدادات ------ */
-        // ضع هنا رابط Webhook الخاص بـ n8n (يجب أن يكون POST ويستقبل JSON)
-        const N8N_WEBHOOK_URL = 'https://35.204.151.221.nip.io/webhook/beef3c5e-bb46-4c72-8a90-197983a64896/chat';
-        const SESSION_ID = "session_" + Math.random().toString(36).substring(7); // إنشاء جلسة فريدة للذاكرة
+    <div id="chat-messages" class="flex-1 p-5 overflow-y-auto flex flex-col gap-4">
+      <div class="flex gap-3 msg-bubble">
+        <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0 mt-1"><i class="fas fa-robot text-darkBg text-sm"></i></div>
+        <div class="bg-cardBg text-slate-200 p-3 rounded-2xl rounded-tr-none text-sm leading-relaxed border border-slate-700 shadow-sm bot-message">أهلاً بك! أنا جاهز لمساعدتك في العثور على أفضل العروض والمنتجات. عم تبحث اليوم؟</div>
+      </div>
+    </div>
 
-        const widget = document.getElementById('chat-widget');
-        const messagesContainer = document.getElementById('chat-messages');
-        const inputField = document.getElementById('user-input');
+    <div class="p-4 bg-darkBg border-t border-slate-800 shrink-0">
+      <div class="relative flex items-center bg-slate-800 rounded-full border border-slate-700 focus-within:border-accent transition-colors overflow-hidden">
+        <!-- تم إضافة pl-12 هنا لمنع تداخل النص مع زر الإرسال -->
+        <input type="text" id="user-input" onkeypress="handleEnter(event)" placeholder="اسأل عن أرخص لابتوب..." class="w-full bg-transparent text-white text-sm pr-5 pl-12 py-3 outline-none placeholder-slate-500">
+        <button onclick="sendMessage()" class="absolute left-2 w-8 h-8 flex items-center justify-center bg-accent text-darkBg rounded-full hover:bg-white transition-colors"><i class="fas fa-paper-plane text-xs"></i></button>
+      </div>
+    </div>
+  </div>
 
-        function toggleChat() {
-            if (widget.classList.contains('chat-hidden')) {
-                widget.classList.remove('chat-hidden');
-                widget.classList.add('chat-visible');
-                inputField.focus();
-            } else {
-                widget.classList.remove('chat-visible');
-                widget.classList.add('chat-hidden');
-            }
+  <script>
+    const N8N_WEBHOOK_URL = 'https://35.204.151.221.nip.io/webhook/28ddbab7-9ca1-4ac3-aa24-e51e3edef7a4/chat';
+    const SESSION_ID = "session_" + Math.random().toString(36).substring(7);
+
+    const widget = document.getElementById('chat-widget');
+    const messagesContainer = document.getElementById('chat-messages');
+    const inputField = document.getElementById('user-input');
+
+    function toggleChat() { widget.classList.toggle('chat-hidden'); widget.classList.toggle('chat-visible'); if(widget.classList.contains('chat-visible')) inputField.focus(); }
+    function clearChat() { messagesContainer.innerHTML = messagesContainer.firstElementChild.outerHTML; }
+    function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
+
+    async function sendMessage() {
+      const text = inputField.value.trim();
+      if (!text) return;
+      appendUserMessage(text);
+      inputField.value = '';
+      const typingId = showTypingIndicator();
+
+      try {
+        const response = await fetch(N8N_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chatInput: text, sessionId: SESSION_ID })
+        });
+        const data = await response.json();
+        document.getElementById(typingId).remove();
+        parseAndAppendBotMessage(data.output || "حدث خطأ.");
+      } catch (error) {
+        document.getElementById(typingId).remove();
+        parseAndAppendBotMessage("عذراً، لم أتمكن من الاتصال بالخادم.");
+      }
+    }
+
+    function appendUserMessage(text) {
+      messagesContainer.insertAdjacentHTML('beforeend', `<div class="flex justify-end msg-bubble"><div class="bg-blue-600 text-white p-3 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%] break-words">${text}</div></div>`);
+      scrollToBottom();
+    }
+
+    function parseAndAppendBotMessage(text) {
+      let finalHtml = '';
+       
+      if (text.includes('[PRODUCT]')) {
+        const parts = text.split(/\[PRODUCT\]/);
+        const introText = parts[0].trim();
+         
+        if (introText) {
+          finalHtml += `<div class="mb-2">${introText.replace(/\n/g, '<br>')}</div>`;
         }
 
-        function clearChat() {
-            // نمسح كل الرسائل ونُبقي رسالة الترحيب فقط
-            const welcomeMsg = messagesContainer.firstElementChild.outerHTML;
-            messagesContainer.innerHTML = welcomeMsg;
+        finalHtml += `<div class="carousel-container w-full">`;
+
+        for (let i = 1; i < parts.length; i++) {
+          const productData = parts[i].split('[/PRODUCT]')[0];
+           
+          const name = (productData.match(/Name:\s*(.*)/) || [])[1] || 'منتج';
+          const price = (productData.match(/Price:\s*(.*)/) || [])[1] || '';
+          const desc = (productData.match(/Desc:\s*(.*)/) || [])[1] || '';
+          const img = (productData.match(/Image:\s*(.*)/) || [])[1];
+          const link = (productData.match(/Link:\s*(.*)/) || [])[1];
+
+          finalHtml += `
+            <div class="carousel-card">
+              ${img && img !== 'null' ? `<img src="${img.trim()}" class="carousel-img" alt="${name}">` : `<div class="carousel-img flex items-center justify-center text-slate-500"><i class="fas fa-image text-3xl"></i></div>`}
+              <div class="carousel-title">${name}</div>
+              <div class="carousel-price">$${price}</div>
+              <div class="carousel-desc">${desc}</div>
+              ${link && link !== 'null' ? `<a href="${link.trim()}" target="_blank" class="carousel-btn">شراء الآن</a>` : ''}
+            </div>
+          `;
+        }
+        finalHtml += `</div>`;
+         
+        const outroText = parts[parts.length - 1].split('[/PRODUCT]')[1];
+        if (outroText && outroText.trim()) {
+          finalHtml += `<div class="mt-2">${outroText.trim().replace(/\n/g, '<br>')}</div>`;
         }
 
-        function handleEnter(e) {
-            if (e.key === 'Enter') sendMessage();
-        }
+      } else {
+        finalHtml = text.replace(/\n/g, '<br>');
+      }
 
-        async function sendMessage() {
-            const text = inputField.value.trim();
-            if (!text) return;
+      const msgHtml = `
+        <div class="flex gap-3 msg-bubble">
+          <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0 mt-1"><i class="fas fa-robot text-darkBg text-sm"></i></div>
+          <div class="bg-cardBg text-slate-200 p-3 rounded-2xl rounded-tr-none text-sm leading-relaxed border border-slate-700 shadow-sm bot-message max-w-[90%] overflow-hidden">
+            ${finalHtml}
+          </div>
+        </div>
+      `;
+      messagesContainer.insertAdjacentHTML('beforeend', msgHtml);
+      setTimeout(scrollToBottom, 100);
+    }
 
-            // 1. إضافة رسالة المستخدم للشاشة
-            appendUserMessage(text);
-            inputField.value = '';
-
-            // 2. إظهار مؤشر الكتابة (Typing)
-            const typingId = showTypingIndicator();
-
-            try {
-                // 3. إرسال الطلب إلى n8n
-                const response = await fetch(N8N_WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chatInput: text, sessionId: SESSION_ID })
-                });
-
-                const data = await response.json();
-                
-                // 4. إخفاء مؤشر الكتابة
-                document.getElementById(typingId).remove();
-
-                // 5. عرض رد البوت (يجب أن يعيد n8n البيانات في حقل output)
-                const botReply = data.output || "عذراً، حدث خطأ في النظام.";
-                appendBotMessage(botReply);
-
-            } catch (error) {
-                document.getElementById(typingId).remove();
-                appendBotMessage("عذراً، لم أتمكن من الاتصال بالخادم. يرجى المحاولة لاحقاً.");
-                console.error(error);
-            }
-        }
-
-        function appendUserMessage(text) {
-            const msgHtml = `
-                <div class="flex justify-end msg-bubble">
-                    <div class="bg-blue-600 text-white p-3 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%]">
-                        ${text}
-                    </div>
-                </div>
-            `;
-            messagesContainer.insertAdjacentHTML('beforeend', msgHtml);
-            scrollToBottom();
-        }
-
-        function appendBotMessage(text) {
-            // تحويل الـ Markdown البسيط (الصور والروابط) إلى HTML ليظهر بشكل جميل
-            let formattedText = text
-                .replace(/\*\*(.*?)\*\*/g, '<strong class="text-accent">$1</strong>') // تعريض الخط وتلوينه
-                .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" class="mt-2 rounded-lg">') // الصور
-                .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="block text-center mt-3 bg-accent text-darkBg py-2 rounded-lg font-bold hover:bg-white transition-colors">$1</a>') // الروابط
-                .replace(/\n/g, '<br>'); // الأسطر الجديدة
-
-            const msgHtml = `
-                <div class="flex gap-3 msg-bubble">
-                    <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0 mt-1">
-                        <i class="fas fa-robot text-darkBg text-sm"></i>
-                    </div>
-                    <div class="bg-cardBg text-slate-200 p-3 rounded-2xl rounded-tr-none text-sm leading-relaxed border border-slate-700 shadow-sm bot-message max-w-[85%]">
-                        ${formattedText}
-                    </div>
-                </div>
-            `;
-            messagesContainer.insertAdjacentHTML('beforeend', msgHtml);
-            scrollToBottom();
-        }
-
-        function showTypingIndicator() {
-            const id = 'typing-' + Date.now();
-            const html = `
-                <div id="${id}" class="flex gap-3 msg-bubble">
-                    <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0 mt-1">
-                        <i class="fas fa-robot text-darkBg text-sm"></i>
-                    </div>
-                    <div class="bg-cardBg p-4 rounded-2xl rounded-tr-none border border-slate-700 flex gap-1 items-center h-10">
-                        <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
-                        <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-                        <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
-                    </div>
-                </div>
-            `;
-            messagesContainer.insertAdjacentHTML('beforeend', html);
-            scrollToBottom();
-            return id;
-        }
-
-        function scrollToBottom() {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-    </script>
+    function showTypingIndicator() {
+      const id = 'typing-' + Date.now();
+      messagesContainer.insertAdjacentHTML('beforeend', `<div id="${id}" class="flex gap-3 msg-bubble"><div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0 mt-1"><i class="fas fa-robot text-darkBg text-sm"></i></div><div class="bg-cardBg p-4 rounded-2xl rounded-tr-none border border-slate-700 flex gap-1 items-center h-10"><div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div><div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div></div></div>`);
+      scrollToBottom(); return id;
+    }
+    function scrollToBottom() { messagesContainer.scrollTop = messagesContainer.scrollHeight; }
+  </script>
 </body>
 </html>
