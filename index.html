@@ -69,12 +69,13 @@
   </div>
 
   <script>
-    const N8N_WEBHOOK_URL = 'https://35.204.151.221.nip.io/webhook/28ddbab7-9ca1-4ac3-aa24-e51e3edef7a4/chat';
+    const N8N_WEBHOOK_URL = 'https://35.204.151.221.nip.io/webhook/fa5f9af0-884e-4a9b-8748-58dceff15a64';
     const SESSION_ID = "session_" + Math.random().toString(36).substring(7);
     
-    // إعدادات الحماية من السبام
+    // إعدادات الحماية ومعرف المتجر
     const MAX_MESSAGES_PER_DAY = 40;
     const SECRET_API_KEY = 'DDDMONSTER2026'; // كلمة السر الخاصة بالويب هوك
+    const STORE_ID = 'test_test'; // <-- هذا هو المعرف الذي سيقرأه n8n ويبحث بناءً عليه
 
     const widget = document.getElementById('chat-widget');
     const messagesContainer = document.getElementById('chat-messages');
@@ -85,39 +86,36 @@
     function clearChat() { messagesContainer.innerHTML = messagesContainer.firstElementChild.outerHTML; }
     function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
 
-    // دالة فحص الحد اليومي للرسائل
     function checkRateLimit() {
-        const today = new Date().toDateString();
-        let usage = JSON.parse(localStorage.getItem('chatUsage')) || { date: today, count: 0 };
-        
-        if (usage.date !== today) { usage = { date: today, count: 0 }; } // يوم جديد
-        
-        if (usage.count >= MAX_MESSAGES_PER_DAY) {
-            inputField.disabled = true;
-            sendBtn.disabled = true;
-            inputField.placeholder = "تجاوزت الحد المسموح اليوم. عد غداً!";
-            return false;
-        }
-        
-        usage.count++;
-        localStorage.setItem('chatUsage', JSON.stringify(usage));
-        return true;
+      const today = new Date().toDateString();
+      let usage = JSON.parse(localStorage.getItem('chatUsage')) || { date: today, count: 0 };
+       
+      if (usage.date !== today) { usage = { date: today, count: 0 }; } 
+       
+      if (usage.count >= MAX_MESSAGES_PER_DAY) {
+        inputField.disabled = true;
+        sendBtn.disabled = true;
+        inputField.placeholder = "تجاوزت الحد المسموح اليوم. عد غداً!";
+        return false;
+      }
+       
+      usage.count++;
+      localStorage.setItem('chatUsage', JSON.stringify(usage));
+      return true;
     }
 
     async function sendMessage() {
       const text = inputField.value.trim();
       if (!text) return;
       
-      // فحص إذا تجاوز المستخدم 40 رسالة
       if (!checkRateLimit()) {
-          parseAndAppendBotMessage("عذراً، لقد استنفدت الحد الأقصى للرسائل (40 رسالة) لهذا اليوم. يرجى العودة غداً للمزيد من الاستفسارات.");
-          return;
+        parseAndAppendBotMessage("عذراً، لقد استنفدت الحد الأقصى للرسائل لهذا اليوم. يرجى العودة غداً للمزيد من الاستفسارات.");
+        return;
       }
 
       appendUserMessage(text);
       inputField.value = '';
       
-      // قفل واجهة المستخدم لمنع الضغط المتكرر (Spam)
       inputField.disabled = true;
       sendBtn.disabled = true;
       inputField.placeholder = "جاري البحث...";
@@ -129,9 +127,13 @@
           method: 'POST',
           headers: { 
               'Content-Type': 'application/json',
-              'Authorization': SECRET_API_KEY // إرسال كلمة السر في الهيدر
+              'Authorization': SECRET_API_KEY 
           },
-          body: JSON.stringify({ chatInput: text, sessionId: SESSION_ID })
+          body: JSON.stringify({ 
+              chatInput: text, 
+              sessionId: SESSION_ID,
+              storeId: STORE_ID // <-- إرسال المعرف مع كل رسالة
+          })
         });
         const data = await response.json();
         document.getElementById(typingId).remove();
@@ -140,10 +142,9 @@
         document.getElementById(typingId).remove();
         parseAndAppendBotMessage("عذراً، لم أتمكن من الاتصال بالخادم.");
       } finally {
-        // إعادة فتح الواجهة بعد الرد
         inputField.disabled = false;
         sendBtn.disabled = false;
-        inputField.placeholder = "اسأل عن أرخص لابتوب...";
+        inputField.placeholder = "اسأل عن أي منتج...";
         inputField.focus();
       }
     }
