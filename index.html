@@ -8,11 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
    
   <script>
-    tailwind.config = {
-      theme: {
-        extend: { colors: { darkBg: '#0f172a', cardBg: '#1e293b', accent: '#38bdf8', } }
-      }
-    }
+    tailwind.config = { theme: { extend: { colors: { darkBg: '#0f172a', cardBg: '#1e293b', accent: '#38bdf8', } } } }
   </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
@@ -25,25 +21,13 @@
     .msg-bubble { animation: slideUp 0.3s ease-out forwards; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ستايل البطاقات التمريرية (Carousel) مع إظهار شريط التمرير */
-    .carousel-container {
-      display: flex; overflow-x: auto; gap: 12px; padding: 10px 5px 15px 5px; margin-top: 10px; margin-bottom: 5px;
-      scroll-snap-type: x mandatory; 
-      /* إظهار الشريط في فايرفوكس */
-      scrollbar-width: thin;
-      scrollbar-color: #38bdf8 rgba(0,0,0,0.2);
-    }
-    /* تصميم شريط التمرير الأفقي لمتصفحات كروم/سفاري */
+    .carousel-container { display: flex; overflow-x: auto; gap: 12px; padding: 10px 5px 15px 5px; margin-top: 10px; margin-bottom: 5px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: #38bdf8 rgba(0,0,0,0.2); }
     .carousel-container::-webkit-scrollbar { height: 8px; }
     .carousel-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
     .carousel-container::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
     .carousel-container::-webkit-scrollbar-thumb:hover { background: #7dd3fc; }
      
-    .carousel-card {
-      min-width: 220px; max-width: 220px; background: #1e293b; border: 1px solid #334155;
-      border-radius: 16px; padding: 12px; scroll-snap-align: start; flex-shrink: 0;
-      display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
+    .carousel-card { min-width: 220px; max-width: 220px; background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 12px; scroll-snap-align: start; flex-shrink: 0; display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
     .carousel-img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; background-color: #0f172a; }
     .carousel-title { font-weight: bold; color: #f8fafc; font-size: 14px; line-height: 1.4; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .carousel-price { color: #38bdf8; font-weight: bold; font-size: 16px; margin-bottom: 8px; }
@@ -78,9 +62,8 @@
 
     <div class="p-4 bg-darkBg border-t border-slate-800 shrink-0">
       <div class="relative flex items-center bg-slate-800 rounded-full border border-slate-700 focus-within:border-accent transition-colors overflow-hidden">
-        <!-- تم إضافة pl-12 هنا لمنع تداخل النص مع زر الإرسال -->
         <input type="text" id="user-input" onkeypress="handleEnter(event)" placeholder="اسأل عن أرخص لابتوب..." class="w-full bg-transparent text-white text-sm pr-5 pl-12 py-3 outline-none placeholder-slate-500">
-        <button onclick="sendMessage()" class="absolute left-2 w-8 h-8 flex items-center justify-center bg-accent text-darkBg rounded-full hover:bg-white transition-colors"><i class="fas fa-paper-plane text-xs"></i></button>
+        <button id="send-btn" onclick="sendMessage()" class="absolute left-2 w-8 h-8 flex items-center justify-center bg-accent text-darkBg rounded-full hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"><i class="fas fa-paper-plane text-xs"></i></button>
       </div>
     </div>
   </div>
@@ -88,26 +71,66 @@
   <script>
     const N8N_WEBHOOK_URL = 'https://35.204.151.221.nip.io/webhook/28ddbab7-9ca1-4ac3-aa24-e51e3edef7a4/chat';
     const SESSION_ID = "session_" + Math.random().toString(36).substring(7);
+    
+    // إعدادات الحماية من السبام
+    const MAX_MESSAGES_PER_DAY = 40;
+    const SECRET_API_KEY = 'DDDMONSTER2026'; // كلمة السر الخاصة بالويب هوك
 
     const widget = document.getElementById('chat-widget');
     const messagesContainer = document.getElementById('chat-messages');
     const inputField = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
 
     function toggleChat() { widget.classList.toggle('chat-hidden'); widget.classList.toggle('chat-visible'); if(widget.classList.contains('chat-visible')) inputField.focus(); }
     function clearChat() { messagesContainer.innerHTML = messagesContainer.firstElementChild.outerHTML; }
     function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
 
+    // دالة فحص الحد اليومي للرسائل
+    function checkRateLimit() {
+        const today = new Date().toDateString();
+        let usage = JSON.parse(localStorage.getItem('chatUsage')) || { date: today, count: 0 };
+        
+        if (usage.date !== today) { usage = { date: today, count: 0 }; } // يوم جديد
+        
+        if (usage.count >= MAX_MESSAGES_PER_DAY) {
+            inputField.disabled = true;
+            sendBtn.disabled = true;
+            inputField.placeholder = "تجاوزت الحد المسموح اليوم. عد غداً!";
+            return false;
+        }
+        
+        usage.count++;
+        localStorage.setItem('chatUsage', JSON.stringify(usage));
+        return true;
+    }
+
     async function sendMessage() {
       const text = inputField.value.trim();
       if (!text) return;
+      
+      // فحص إذا تجاوز المستخدم 40 رسالة
+      if (!checkRateLimit()) {
+          parseAndAppendBotMessage("عذراً، لقد استنفدت الحد الأقصى للرسائل (40 رسالة) لهذا اليوم. يرجى العودة غداً للمزيد من الاستفسارات.");
+          return;
+      }
+
       appendUserMessage(text);
       inputField.value = '';
+      
+      // قفل واجهة المستخدم لمنع الضغط المتكرر (Spam)
+      inputField.disabled = true;
+      sendBtn.disabled = true;
+      inputField.placeholder = "جاري البحث...";
+      
       const typingId = showTypingIndicator();
 
       try {
         const response = await fetch(N8N_WEBHOOK_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': SECRET_API_KEY // إرسال كلمة السر في الهيدر
+          },
           body: JSON.stringify({ chatInput: text, sessionId: SESSION_ID })
         });
         const data = await response.json();
@@ -116,6 +139,12 @@
       } catch (error) {
         document.getElementById(typingId).remove();
         parseAndAppendBotMessage("عذراً، لم أتمكن من الاتصال بالخادم.");
+      } finally {
+        // إعادة فتح الواجهة بعد الرد
+        inputField.disabled = false;
+        sendBtn.disabled = false;
+        inputField.placeholder = "اسأل عن أرخص لابتوب...";
+        inputField.focus();
       }
     }
 
@@ -131,15 +160,12 @@
         const parts = text.split(/\[PRODUCT\]/);
         const introText = parts[0].trim();
          
-        if (introText) {
-          finalHtml += `<div class="mb-2">${introText.replace(/\n/g, '<br>')}</div>`;
-        }
+        if (introText) { finalHtml += `<div class="mb-2">${introText.replace(/\n/g, '<br>')}</div>`; }
 
         finalHtml += `<div class="carousel-container w-full">`;
 
         for (let i = 1; i < parts.length; i++) {
           const productData = parts[i].split('[/PRODUCT]')[0];
-           
           const name = (productData.match(/Name:\s*(.*)/) || [])[1] || 'منتج';
           const price = (productData.match(/Price:\s*(.*)/) || [])[1] || '';
           const desc = (productData.match(/Desc:\s*(.*)/) || [])[1] || '';
@@ -159,9 +185,7 @@
         finalHtml += `</div>`;
          
         const outroText = parts[parts.length - 1].split('[/PRODUCT]')[1];
-        if (outroText && outroText.trim()) {
-          finalHtml += `<div class="mt-2">${outroText.trim().replace(/\n/g, '<br>')}</div>`;
-        }
+        if (outroText && outroText.trim()) { finalHtml += `<div class="mt-2">${outroText.trim().replace(/\n/g, '<br>')}</div>`; }
 
       } else {
         finalHtml = text.replace(/\n/g, '<br>');
