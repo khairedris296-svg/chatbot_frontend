@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iteru Intelligence | Premium AI Automation</title>
+    <!-- استدعاء وتجهيز Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#050505',
+                        royalGold: '#d4af37',
+                        royalBlue: '#0055ff',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* منع تحديد النصوص للحفاظ على فخامة الهوية */
+        .premium-select-none {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        /* تأثير تنعيم الحركة لـ Scale */
+        .smooth-hover {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+        }
+
+        /* تحسين أداء الخلفية المتحركة عبر كرت الشاشة GPU */
+        .glow-blob {
+            will-change: transform;
+            pointer-events: none;
+        }
+
+        /* تخصيص السكرول بار العام للموقع تماشياً مع الدشابورد */
+        body::-webkit-scrollbar {
+            width: 6px;
+        }
+        body::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-white font-sans overflow-x-hidden antialiased">
+
+    <!-- الحاوية الأساسية لخلفية الموقع كاملة -->
+    <div class="relative min-h-screen w-full flex flex-col justify-between overflow-hidden">
+        
+        <!-- الأضواء الخلفية الفخمة (تتحرك وتمتد على كامل الصفحة) -->
+        <div class="absolute inset-0 z-0 overflow-hidden">
+            <div class="glow-blob absolute top-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-royalGold/10 blur-[130px] animate-pulse" style="animation-duration: 8s;"></div>
+            <div class="glow-blob absolute bottom-[10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-royalBlue/15 blur-[150px] animate-pulse" style="animation-duration: 12s;"></div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- DEVELOPED FIXED HEADER (PERFECT BALANCE)   -->
+        <!-- ========================================== -->
+        <header class="fixed top-0 left-0 z-50 w-full bg-darkBg/70 backdrop-blur-md border-b border-white/[0.02] premium-select-none transition-all duration-300">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                
+                <!-- THE PERFECTED ROYAL LOGO -->
+                <div class="smooth-hover hover:scale-105 cursor-pointer flex flex-col items-start select-none">
+                    <span class="text-xl font-bold tracking-widest text-royalGold uppercase">ITERU</span>
+                    <span class="text-[10px] font-bold tracking-[0.27em] text-royalBlue uppercase mt-1">INTELLIGENCE</span>
+                </div>
+
+                <!-- FIXED CALL TO ACTION -->
+                <div>
+                    <a href="#booking" class="border border-royalGold/30 hover:border-royalGold bg-white/5 hover:bg-royalGold hover:text-black px-6 py-2 rounded-full text-sm font-medium smooth-hover hover:scale-105 backdrop-blur-md transition-all">
+                        Book Strategy Call
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="relative z-10 flex-grow flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto premium-select-none py-20">
+            
+            <p class="text-royalGold/80 italic text-sm md:text-base font-serif tracking-wide mb-4">
+                "Building Absolute Certainty in a Volatile Digital Market."
+            </p>
+
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-none mb-6">
+                <span class="inline-block smooth-hover hover:scale-110 hover:text-royalGold cursor-default mx-2">ENGINEER.</span>
+                <span class="inline-block smooth-hover hover:scale-110 hover:text-royalBlue cursor-default mx-2">AUTOMATE.</span>
+                <span class="inline-block smooth-hover hover:scale-110 hover:text-white cursor-default mx-2">DOMINATE.</span>
+            </h1>
+
+            <p class="text-gray-400 text-base md:text-xl max-w-3xl leading-relaxed mb-10 font-light">
+                We don't just build traditional chatbots, we engineer hyper-intelligent digital allies and elite automation systems, designed for top-tier companies to dominate their sales flawlessly and luxuriously.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-md">
+                <a href="#booking" class="w-full sm:w-auto bg-royalGold hover:bg-white text-black font-bold px-8 py-4 rounded-xl smooth-hover hover:scale-105 shadow-lg shadow-royalGold/10 text-center transition-colors">
+                    Secure Your AI Systems
+                </a>
+                <a href="#about" class="w-full sm:w-auto bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium px-8 py-4 rounded-xl smooth-hover hover:scale-105 text-center backdrop-blur-sm transition-colors">
+                    Read Our Manifesto
+                </a>
+            </div>
+
+        </main>
+
+        <!-- ========================================== -->
+        <!-- SECTION 2: ABOUT US (THE MANIFESTO)         -->
+        <!-- ========================================== -->
+        <section id="about" class="relative z-10 w-full max-w-7xl mx-auto px-6 py-24 border-t border-white/5 premium-select-none">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                
+                <div class="lg:col-span-5 space-y-4">
+                    <span class="text-xs font-bold tracking-[0.4em] text-royalBlue block uppercase">01 / OUR MANIFESTO</span>
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tight leading-none text-white">
+                        THE <span class="text-royalGold">PARADIGM</span> SHIFT.
+                    </h2>
+                    <p class="text-royalGold/60 italic text-sm font-serif">
+                        "Mediocrity is the ultimate friction in automated scale."
+                    </p>
+                </div>
+
+                <div class="lg:col-span-7 text-gray-400 font-light leading-relaxed text-base md:text-lg space-y-6">
+                    <p>
+                        In a market saturated with generic, poorly scripted chatbots that frustrate high-value clients, 
+                        <strong class="text-white font-semibold">Iteru Intelligence</strong> was founded to bridge the massive gap between superficial code and elite autonomous architecture.
+                    </p>
+                    <p>
+                        We do not believe in mass-produced solutions. We believe in engineering digital infrastructure that commands respect, aligns perfectly with your brand's luxury identity, and operates with absolute mathematical certainty.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Pillars of Power -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+                
+                <!-- Pillar 1 -->
+                <div class="bg-white/[0.02] border border-white/5 hover:border-royalGold/30 p-8 rounded-2xl smooth-hover hover:scale-[1.03] backdrop-blur-sm group">
+                    <div class="w-12 h-12 rounded-xl bg-royalGold/5 flex items-center justify-center border border-royalGold/10 mb-6 group-hover:bg-royalGold group-hover:text-black transition-colors duration-500">
+                        <span class="font-mono text-sm font-bold text-royalGold group-hover:text-black">I</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 tracking-tight">Elite Architecture</h3>
+                    <p class="text-gray-500 text-sm font-light leading-relaxed">
+                        Deploying hyper-targeted, customized semantic search and dedicated database logic. Zero hallucinations. Pure, unadulterated precision.
+                    </p>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="bg-white/[0.02] border border-white/5 hover:border-royalBlue/30 p-8 rounded-2xl smooth-hover hover:scale-[1.03] backdrop-blur-sm group">
+                    <div class="w-12 h-12 rounded-xl bg-royalBlue/5 flex items-center justify-center border border-royalBlue/10 mb-6 group-hover:bg-royalBlue group-hover:text-white transition-colors duration-500">
+                        <span class="font-mono text-sm font-bold text-royalBlue group-hover:text-white">II</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 tracking-tight">Bespoke Design</h3>
+                    <p class="text-gray-500 text-sm font-light leading-relaxed">
+                        Interfaces shouldn't just function—they must captivate. We layer smooth, high-end motion aesthetics that mirror premium corporate standard.
+                    </p>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="bg-white/[0.02] border border-white/5 hover:border-white/20 p-8 rounded-2xl smooth-hover hover:scale-[1.03] backdrop-blur-sm group">
+                    <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 mb-6 group-hover:bg-white group-hover:text-black transition-colors duration-500">
+                        <span class="font-mono text-sm font-bold text-white group-hover:text-black">III</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 tracking-tight">Absolute Domination</h3>
+                    <p class="text-gray-500 text-sm font-light leading-relaxed">
+                        Transforming standard traffic into automated high-ticket conversions. We design your systems to act as your top-performing, tireless closers.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+	<!-- ========================================== -->
+        <!-- SECTION 3: SOLUTIONS & ENGAGEMENT TIERS    -->
+        <!-- ========================================== -->
+        <section id="solutions" class="relative z-10 w-full max-w-7xl mx-auto px-6 py-24 border-t border-white/5 premium-select-none">
+            
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <span class="text-xs font-bold tracking-[0.4em] text-royalBlue block uppercase mb-3">02 / ENGAGEMENT ARCHITECTURE</span>
+                <h2 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">
+                    SELECT YOUR LEVEL OF <span class="text-royalGold">DOMINANCE</span>.
+                </h2>
+                <p class="text-gray-400 font-light text-sm md:text-base">
+                    We do not offer hourly billing. We build turn-key digital equity. Choose the infrastructure that matches your corporate scale.
+                </p>
+            </div>
+
+            <!-- شبكة باقات الخدمات الثلاثية -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                
+                <!-- Tier 1: Core Automation -->
+                <div class="bg-white/[0.01] border border-white/5 p-8 rounded-2xl flex flex-col justify-between smooth-hover hover:scale-[1.02] backdrop-blur-sm relative overflow-hidden group">
+                    <div>
+                        <span class="text-xs font-mono text-gray-500 block mb-2">TIER 01 // FOUNDATIONAL</span>
+                        <h3 class="text-2xl font-bold text-white mb-4">Core Automation</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-8">
+                            Designed for growing enterprises looking to eliminate repetitive operational friction and establish basic AI positioning.
+                        </p>
+                        <ul class="space-y-3 text-sm text-gray-400 font-light mb-8">
+                            <li class="flex items-center gap-3"><span class="text-royalBlue">✓</span> Custom Workflow Engineering (n8n)</li>
+                            <li class="flex items-center gap-3"><span class="text-royalBlue">✓</span> Standard Customer-Facing Chatbot</li>
+                            <li class="flex items-center gap-3"><span class="text-royalBlue">✓</span> Basic CRM & API Synchronizations</li>
+                        </ul>
+                    </div>
+                    <a href="#booking" class="block w-full text-center border border-white/10 hover:border-white text-white text-sm font-medium py-3 rounded-xl smooth-hover transition-colors">
+                        Initiate Integration
+                    </a>
+                </div>
+
+                <!-- Tier 2: Bespoke AI Architecture (The Focused Choice) -->
+                <div class="bg-white/[0.03] border-2 border-royalGold p-8 rounded-2xl flex flex-col justify-between smooth-hover hover:scale-[1.02] backdrop-blur-md relative overflow-hidden shadow-2xl shadow-royalGold/5">
+                    <div class="absolute top-0 right-0 bg-royalGold text-black text-[10px] font-bold tracking-widest uppercase px-4 py-1 rounded-bl-xl">
+                        MOST REQUESTED
+                    </div>
+                    <div>
+                        <span class="text-xs font-mono text-royalGold block mb-2">TIER 02 // BESPOKE</span>
+                        <h3 class="text-2xl font-bold text-white mb-4">Bespoke Architecture</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-8">
+                            Our flagship tier. Deep neural orchestration customized completely around your proprietary company data and logic.
+                        </p>
+                        <ul class="space-y-3 text-sm text-gray-300 font-light mb-8">
+                            <li class="flex items-center gap-3"><span class="text-royalGold">✓</span> Multi-Agent Autonomous Systems</li>
+                            <li class="flex items-center gap-3"><span class="text-royalGold">✓</span> Vector Database (Pinecone/PostgreSQL)</li>
+                            <li class="flex items-center gap-3"><span class="text-royalGold">✓</span> High-End Premium Interface Aesthetics</li>
+                            <li class="flex items-center gap-3"><span class="text-royalGold">✓</span> Semantic Search & Zero Hallucination Logic</li>
+                        </ul>
+                    </div>
+                    <a href="#booking" class="block w-full text-center bg-royalGold hover:bg-white text-black font-bold py-3 rounded-xl smooth-hover transition-colors">
+                        Deploy Elite System
+                    </a>
+                </div>
+
+                <!-- Tier 3: Elite Domination -->
+                <div class="bg-white/[0.01] border border-white/5 p-8 rounded-2xl flex flex-col justify-between smooth-hover hover:scale-[1.02] backdrop-blur-sm relative overflow-hidden group">
+                    <div>
+                        <span class="text-xs font-mono text-gray-500 block mb-2">TIER 03 // ENTERPRISE</span>
+                        <h3 class="text-2xl font-bold text-white mb-4">Elite Domination</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-8">
+                            Full-scale operational transformation. We sit down with your executives to map, audit, and automate every key pillar of your market.
+                        </p>
+                        <ul class="space-y-3 text-sm text-gray-400 font-light mb-8">
+                            <li class="flex items-center gap-3"><span class="text-royalBlue">✓</span> Full Infrastructure Scale & Cloud Auditing</li>
+                            <li class="flex items-center gap-3"><span class="text-royalBlue">✓</span> 1-on-1 Strategic Consultation Retainer</li>
+                            <li class="flex items-center gap-3"><span class="text-royalBlue">✓</span> Dedicated Agent Clustering & Maintenance</li>
+                        </ul>
+                    </div>
+                    <a href="#booking" class="block w-full text-center border border-white/10 hover:border-royalBlue text-white text-sm font-medium py-3 rounded-xl smooth-hover transition-colors">
+                        Request Private Consultation
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+	<!-- ========================================== -->
+        <!-- SECTION 4: INITIATE CONTACT (BOOKING)      -->
+        <!-- ========================================== -->
+        <section id="booking" class="relative z-10 w-full max-w-4xl mx-auto px-6 py-24 border-t border-white/5 premium-select-none">
+            
+            <div class="text-center mb-16">
+                <span class="text-xs font-bold tracking-[0.4em] text-royalBlue block uppercase mb-3">03 / STRATEGIC ALLIANCE</span>
+                <h2 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">
+                    INITIATE YOUR <span class="text-royalGold">TRANSFORMATION</span>.
+                </h2>
+                <p class="text-gray-400 font-light text-sm md:text-base max-w-2xl mx-auto">
+                    Designed exclusively for forward-thinking enterprises ready to elevate their operational scale. Share your vision below, and let us architect a bespoke AI infrastructure that guarantees your market dominance.
+                </p>
+            </div>
+
+            <!-- حاوية نموذج الحجز الزجاجية الفاخرة -->
+            <div class="bg-white/[0.02] border border-white/10 p-8 md:p-12 rounded-3xl backdrop-blur-xl shadow-2xl relative overflow-hidden">
+                <!-- تأثير الخط الذهبي العلوي للإيحاء بالفخامة -->
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-royalGold to-transparent opacity-50"></div>
+
+                <form class="space-y-6">
+                    <!-- صف الاسم والإيميل -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono text-gray-500 uppercase tracking-widest">Full Name</label>
+                            <input type="text" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-royalGold transition-colors font-light" placeholder="John Doe">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono text-gray-500 uppercase tracking-widest">Corporate Email</label>
+                            <input type="email" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-royalGold transition-colors font-light" placeholder="john@company.com">
+                        </div>
+                    </div>
+
+                    <!-- سؤال الفلترة (مستوى الأعمال) مصاغ باحترافية -->
+                    <div class="space-y-2">
+                        <label class="text-xs font-mono text-gray-500 uppercase tracking-widest">Corporate Scale (Monthly Revenue)</label>
+                        <select class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-gray-400 focus:outline-none focus:border-royalGold transition-colors font-light appearance-none cursor-pointer">
+                            <option value="" disabled selected>Select your current tier...</option>
+                            <option value="under_10k">Growing (Under $10,000)</option>
+                            <option value="10k_50k">Scaling ($10,000 - $50,000)</option>
+                            <option value="50k_100k">Established ($50,000 - $100,000)</option>
+                            <option value="over_100k">Enterprise ($100,000+)</option>
+                        </select>
+                    </div>
+
+                    <!-- حقل الرسالة -->
+                    <div class="space-y-2">
+                        <label class="text-xs font-mono text-gray-500 uppercase tracking-widest">Outline Your Core Objectives & Bottlenecks</label>
+                        <textarea rows="4" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-royalGold transition-colors font-light resize-none" placeholder="Share your vision and where you need automated precision..."></textarea>
+                    </div>
+
+                    <!-- زر الإرسال -->
+                    <button type="submit" class="w-full bg-royalGold hover:bg-white text-black font-bold text-lg py-4 rounded-xl smooth-hover hover:scale-[1.02] transition-all mt-4 shadow-lg shadow-royalGold/20">
+                        Request Strategic Audit
+                    </button>
+                    
+                    <p class="text-center text-[10px] text-gray-600 mt-4 font-mono uppercase tracking-widest">
+                        Your data is secured by enterprise-grade encryption protocols.
+                    </p>
+                </form>
+            </div>
+
+        </section>
