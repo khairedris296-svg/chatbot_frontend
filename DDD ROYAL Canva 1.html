@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iteru Intelligence - Premium Demo</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        #particle-canvas {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* حاوية الشعار - تأثير التكبير الطفيف والبطيء */
+        .logo-container {
+            /* 0.8s تجعل الحركة بطيئة وناعمة جداً */
+            transition: transform 0.8s ease-in-out;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .logo-container:hover {
+            /* 1.05 تجعل التكبير بسيطاً وغير ملحوظ بشدة */
+            transform: scale(1.05);
+        }
+
+        .logo-container h1 {
+            font-size: 4rem;
+            color: #d4af37;
+            margin: 0;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .logo-container p {
+            font-size: 1.5rem;
+            color: #4a90e2;
+            margin: 0;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="content">
+        <div class="logo-container">
+            <h1>Iteru</h1>
+            <p>Intelligence</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.color = Math.random() > 0.5 ? '#d4af37' : '#4a90e2';
+            }
+            update() { this.x += this.speedX; this.y += this.speedY; }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        function init() { for (let i = 0; i < 100; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        init();
+        animate();
+    </script>
+</body>
+</html>
